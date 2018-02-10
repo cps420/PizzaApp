@@ -1,42 +1,25 @@
-﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="PizzaApp._Default" %>
+﻿<%@ Page Title="Pizza App" Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="PizzaApp._Default" %>
 
-<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+<html>
+    <head>
+        <title>Pizza App</title>
+        <link type="text/css" rel="stylesheet" href="Content/utilities.css" />
+    </head>
 
-    <div class="jumbotron">
-        <h1>ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-        <p><a href="http://www.asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-    </div>
+    <body>
+        <div id="heading_container" class="flex row j-center a-center bg-m-dk">
 
-    <div class="row">
-        <div class="col-md-4">
-            <h2>Getting started</h2>
-            <p>
-                ASP.NET Web Forms lets you build dynamic websites using a familiar drag-and-drop, event-driven model.
-            A design surface and hundreds of controls and components let you rapidly build sophisticated, powerful UI-driven sites with data access.
-            </p>
-            <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301948">Learn more &raquo;</a>
-            </p>
+            <asp:Label ID="lblHeaderTitle" CssClass="txt-gry-lt" runat="server" Text="Pizza App"></asp:Label>
+
         </div>
-        <div class="col-md-4">
-            <h2>Get more libraries</h2>
-            <p>
-                NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.
-            </p>
-            <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301949">Learn more &raquo;</a>
-            </p>
-        </div>
-        <div class="col-md-4">
-            <h2>Web Hosting</h2>
-            <p>
-                You can easily find a web hosting company that offers the right mix of features and price for your applications.
-            </p>
-            <p>
-                <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301950">Learn more &raquo;</a>
-            </p>
-        </div>
-    </div>
 
-</asp:Content>
+        <div id="content_container">
+            <form id="form1" runat="server">
+                <asp:DropDownList ID="ddlPizzaSize" runat="server"></asp:DropDownList>
+                <asp:CheckBoxList ID="cblIngredients" runat="server"></asp:CheckBoxList>
+                <asp:RadioButtonList ID="rblCrustType" runat="server"></asp:RadioButtonList>
+                <asp:Button ID="btnSaveForm" runat="server" Text="Save Input" OnClick="btnSaveForm_Click" />
+            </form>
+        </div>
+    </body>
+</html>
