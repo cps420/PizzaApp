@@ -10,7 +10,40 @@ namespace PizzaApp
 {
     public partial class _Default : Page
     {
-        PizzaForm PizzaInput = new PizzaForm();
+        Pizza Pizza
+        {
+            get
+            {
+                return (Pizza)Session["Pizza"];
+            }
+            set
+            {
+                Session["Pizza"] = value;
+            }
+        }
+
+        PizzaForm PizzaInput {
+            get
+            {
+                return (PizzaForm) Session["PizzaInput"];
+            }
+            set
+            {
+                Session["PizzaInput"] = value;
+            }
+        }
+
+        PizzaOrder Order
+        {
+            get
+            {
+                return (PizzaOrder)Session["Order"];
+            }
+            set
+            {
+                Session["Order"] = value;
+            }
+        }
 
         List<ListItem> PizzaSizes
         {
@@ -121,12 +154,84 @@ namespace PizzaApp
             }
         }
 
-        protected void btnSaveForm_Click(object sender, EventArgs e)
+        void ShowInput()
         {
+            string inputStr = $"Size: {this.PizzaInput.Size}" + Environment.NewLine;
+            if (this.PizzaInput.Ingredients.Count > 0) {
+                inputStr += "Ingredients:" + Environment.NewLine;
+                foreach (PizzaIngredient ingredient in this.PizzaInput.Ingredients)
+                {
+                    inputStr += $"{ingredient.ToString()}" + Environment.NewLine;
+                }
+            }
+            inputStr += $"Crust Size: {this.PizzaInput.Crust}" + Environment.NewLine;
+
+            tbInputDisplay.Text = inputStr;
+            divCheckoutInfoContainer.Visible = true;
+        }
+
+        void SaveForm()
+        {
+            this.PizzaInput = new PizzaForm();
             this.ReadSize();
             this.ReadIngredients();
             this.ReadCrustSize();
-            this.lblHeaderTitle.Text += this.PizzaInput.ToString();
+
+            ddlPizzaSize.Enabled = false;
+            cblIngredients.Enabled = false;
+            rblCrustType.Enabled = false;
+
+            ShowInput();
+        }
+
+        protected void btnSaveForm_Click(object sender, EventArgs e)
+        {
+            SaveForm();
+        }
+
+        void ClearForm()
+        {
+            this.BindPizzaSize();
+            this.BindIngredients();
+            this.BindCrustType();
+            this.PizzaInput = new PizzaForm();
+
+            ddlPizzaSize.Enabled = true;
+            cblIngredients.Enabled = true;
+            rblCrustType.Enabled = true;
+
+            txtTip.Text = "";
+            chkDelivery.Checked = false;
+
+            tbInputDisplay.Text = "";
+            tbInvoice.Text = "";
+            divCheckoutInfoContainer.Visible = false;
+            divInvoiceDisplayContainer.Visible = false;
+        }
+
+        protected void btnClearForm_Click(object sender, EventArgs e)
+        {
+            ClearForm();
+        }
+
+        float ReadTip()
+        {
+            return float.Parse(txtTip.Text);
+        }
+
+        void GenerateInvoice()
+        {
+            float tip = ReadTip();
+            this.Order = this.Pizza.GenerateOrder(tip);
+        }
+
+        protected void btnCheckout_Click(object sender, EventArgs e)
+        {
+            this.PizzaInput.Delivery = chkDelivery.Checked;
+            this.Pizza = this.PizzaInput.Save();
+            this.GenerateInvoice();
+            tbInvoice.Text = this.Order.InvoiceString();
+            divInvoiceDisplayContainer.Visible = true;
         }
     }
 }

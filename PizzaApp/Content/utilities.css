@@ -14,6 +14,9 @@
 .flex { display: flex; }
 .column { flex-direction: column; }
 .row { flex-direction: row; }
+
+.grow { flex-grow: 1; }
+
 .j-spc-btwn { justify-content: space-between; }
 .j-spc-arnd { justify-content: space-around; }
 .j-center { justify-content: center; }
